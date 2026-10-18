@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LÔI ĐIỆN MA PHÁP — Lightning Magic & Electromagnetic Arts</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        elecBlue: {
+                            900: '#060d1e',
+                            800: '#0a1636',
+                            700: '#0d2153',
+                            500: '#0072ff',
+                            400: '#00a3ff',
+                            300: '#00d2ff',
+                            100: '#e6f7ff'
+                        },
+                        elecYellow: {
+                            400: '#ffea00',
+                            500: '#ffd700',
+                            600: '#e6b800'
+                        },
+                        elecWhite: '#f0f9ff'
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'electric-border': 'electricBorder 3s linear infinite',
+                        'float': 'float 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.8, filter: 'drop-shadow(0 0 15px rgba(0,210,255,0.8))' },
+                            '50%': { opacity: 1, filter: 'drop-shadow(0 0 25px rgba(255,234,0,0.9))' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060d1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0072ff;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d2ff;
+        }
+
+        /* Lightning Text Glow */
+        .text-glow-blue {
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.7), 0 0 20px rgba(0, 163, 255, 0.5);
+        }
+        .text-glow-yellow {
+            text-shadow: 0 0 10px rgba(255, 234, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        .text-glow-white {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(0, 210, 255, 0.6);
+        }
+
+        /* Glassmorphism card styling */
+        .glass-card {
+            background: rgba(10, 22, 54, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 210, 255, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(0, 210, 255, 0.3), 0 0 15px rgba(255, 234, 0, 0.15);
+        }
+
+        /* Highlight card for Armor and Ultimate */
+        .glass-card-special {
+            background: linear-gradient(135deg, rgba(13, 33, 83, 0.85) 0%, rgba(6, 13, 30, 0.9) 100%);
+            border: 1px solid rgba(255, 234, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 234, 0, 0.2);
+        }
+
+        /* Rank Badge Colors */
+        .rank-D { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid #64748b; }
+        .rank-C { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+        .rank-B { background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid #0ea5e9; }
+        .rank-A { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
+        .rank-S { background: rgba(255, 234, 0, 0.25); color: #ffea00; border: 1px solid #ffd700; text-shadow: 0 0 8px rgba(255, 234, 0, 0.8); }
+
+        /* Electric animated canvas container */
+        #lightning-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .interactive-canvas {
+            pointer-events: auto !important;
+        }
+
+        /* Pulse ring animation */
+        @keyframes ringPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .pulse-ring {
+            animation: ringPulse 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-[#040814] text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-elecBlue-500 selection:text-white">
+
+    <!-- Background Lightning Canvas Overlay -->
+    <canvas id="lightning-canvas"></canvas>
+
+    <!-- Sound Toggle Float Button -->
+    <button id="sound-toggle" onclick="toggleAudio()" class="fixed top-5 right-5 z-50 bg-elecBlue-800/80 hover:bg-elecBlue-700 text-elecBlue-300 hover:text-elecYellow-400 p-3 rounded-full border border-elecBlue-400/40 backdrop-blur-md shadow-lg transition-all flex items-center justify-center gap-2 group" title="Bật/Tắt Âm Thanh Điện Ma Pháp">
+        <i id="sound-icon" class="fa-solid fa-volume-xmark text-lg"></i>
+        <span id="sound-text" class="text-xs font-orbitron hidden md:inline group-hover:inline pr-1">Âm Thanh: MẮT</span>
+    </button>
+
+    <!-- Main Wrapper -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- HEADER / HERO SECTION -->
+        <header class="text-center mb-12 relative">
+            <!-- Ambient Glow Behind Header -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-elecBlue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-elecYellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-elecBlue-900/80 border border-elecBlue-400/30 text-elecBlue-300 text-xs sm:text-sm font-orbitron tracking-widest uppercase mb-4 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-elecYellow-400 animate-ping"></span>
+                Electromagnetic Arts Codices
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black font-orbitron tracking-tight text-white mb-3">
+                <span class="text-glow-blue text-transparent bg-clip-text bg-gradient-to-r from-elecWhite via-elecBlue-300 to-elecBlue-500">LÔI ĐIỆN MA PHÁP</span>
+            </h1>
+            <p class="text-base sm:text-xl font-orbitron tracking-wider text-elecBlue-300/90 mb-6 font-semibold">
+                LIGHTNING MAGIC · ELECTROMAGNETIC ARTS
+            </p>
+
+            <!-- Philosophical Quote Banner -->
+            <div class="max-w-3xl mx-auto p-4 rounded-2xl bg-elecBlue-900/40 border border-elecBlue-500/30 backdrop-blur-md relative overflow-hidden shadow-inner mb-8">
+                <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-elecYellow-400 to-elecBlue-400"></div>
+                <p class="text-sm sm:text-lg italic font-medium text-elecWhite/90 leading-relaxed">
+                    “Điện là <span class="text-elecYellow-400 font-bold text-glow-yellow">TỐC ĐỘ</span>. Điện từ là sự <span class="text-elecBlue-300 font-bold text-glow-blue">ĐIỀU KHIỂN</span>. Điện trường là <span class="text-white font-bold text-glow-white">LÃNH ĐỊA</span>.”
+                </p>
+            </div>
+
+            <!-- CORE STATS BAR -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto text-left">
+                <div class="p-3.5 rounded-xl bg-elecBlue-900/50 border border-elecBlue-500/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-elecBlue-500/20 text-elecBlue-300 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-bolt-lightning text-elecYellow-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-orbitron">Tổng Chiêu Thức</div>
+                        <div class="text-xl font-bold font-orbitron text-white">19 Chiêu</div>
+                    </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-elecBlue-900/50 border border-elecBlue-500/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-elecBlue-500/20 text-elecBlue-300 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-layer-group text-elecBlue-300"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-orbitron">Cấp Độ Bảng</div>
+                        <div class="text-xl font-bold font-orbitron text-white">5 Cấp (D-S)</div>
+                    </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-elecBlue-900/50 border border-elecBlue-500/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-elecBlue-500/20 text-elecBlue-300 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-atom text-elecBlue-300"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-orbitron">Thuộc Tính Core</div>
+                        <div class="text-xs font-semibold text-white">Điện · Từ · Trường</div>
+                    </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-elecBlue-900/50 border border-elecBlue-500/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-elecBlue-500/20 text-elecBlue-300 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-palette text-elecYellow-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-orbitron">Hệ Màu Chủ Đạo</div>
+                        <div class="text-xs font-semibold text-white">Xanh Lam · Bạc · Vàng</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ATTRIBUTE & COLOR SHOWCASE CARD -->
+        <section class="mb-12 p-6 rounded-2xl glass-card relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 max-w-xl">
+                    <h2 class="text-lg font-bold font-orbitron text-elecBlue-300 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-elecYellow-400"></i>
+                        Cấu Trúc Thuộc Tính Ma Pháp
+                    </h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Hệ thống ma pháp vận hành dựa trên sự giao thoa giữa 3 nguyên lý chính: <strong class="text-elecYellow-400">Điện năng</strong> (Sức mạnh bộc phát sát thương), <strong class="text-elecBlue-300">Điện từ</strong> (Khả năng điều khiển vật chất & trường lực), và <strong class="text-white">Điện trường</strong> (Sự mở rộng lãnh địa khống chế).
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
+                    <div class="px-4 py-2 rounded-xl bg-[#0a1128] border border-elecYellow-500/40 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-elecYellow-400 shadow-[0_0_8px_#ffea00]"></span>
+                        <span class="text-xs font-orbitron font-semibold text-elecYellow-400">Vàng Điện (Sát thương)</span>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-[#0a1128] border border-elecBlue-400/40 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-elecBlue-300 shadow-[0_0_8px_#00d2ff]"></span>
+                        <span class="text-xs font-orbitron font-semibold text-elecBlue-300">Xanh Lam (Tốc độ & Từ)</span>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-[#0a1128] border border-slate-200/40 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-slate-100 shadow-[0_0_8px_#ffffff]"></span>
+                        <span class="text-xs font-orbitron font-semibold text-white">Trắng Bạc (Điện trường)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTERS & CONTROLS SECTION -->
+        <section class="mb-10 space-y-4">
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                
+                <!-- Search input -->
+                <div class="relative flex-1 max-w-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="filterSpells()" placeholder="Tìm kiếm tên chiêu thức, từ khóa..." 
+                        class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-elecBlue-900/80 border border-elecBlue-500/30 text-white placeholder-slate-400 focus:outline-none focus:border-elecBlue-300 focus:ring-1 focus:ring-elecBlue-300 text-sm transition-all">
+                </div>
+
+                <!-- Interactive Lightning Generator Trigger -->
+                <button onclick="triggerInteractiveZap()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-elecBlue-500 to-elecBlue-700 hover:from-elecBlue-400 hover:to-elecBlue-600 text-white font-orbitron text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-lg shadow-elecBlue-500/20 active:scale-95 transition-all">
+                    <i class="fa-solid fa-bolt text-elecYellow-400 animate-bounce"></i>
+                    Thử Xung Điện Ma Pháp (Click Zap)
+                </button>
+            </div>
+
+            <!-- Rank Filter Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <span class="text-xs text-slate-400 font-orbitron mr-2 uppercase shrink-0"><i class="fa-solid fa-layer-group"></i> Cấp độ:</span>
+                <button onclick="setRankFilter('ALL')" class="rank-btn active px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 bg-elecBlue-500 text-white border border-elecBlue-300" data-rank="ALL">Tất Cả (19)</button>
+                <button onclick="setRankFilter('D')" class="rank-btn px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 rank-D hover:opacity-100" data-rank="D">Cấp D (04)</button>
+                <button onclick="setRankFilter('C')" class="rank-btn px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 rank-C hover:opacity-100" data-rank="C">Cấp C (04)</button>
+                <button onclick="setRankFilter('B')" class="rank-btn px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 rank-B hover:opacity-100" data-rank="B">Cấp B (05)</button>
+                <button onclick="setRankFilter('A')" class="rank-btn px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 rank-A hover:opacity-100" data-rank="A">Cấp A (04)</button>
+                <button onclick="setRankFilter('S')" class="rank-btn px-3.5 py-1.5 rounded-lg text-xs font-orbitron font-semibold transition-all shrink-0 rank-S hover:opacity-100" data-rank="S">Cấp S (02)</button>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs text-slate-400 font-orbitron mr-2 uppercase shrink-0"><i class="fa-solid fa-filter"></i> Phân loại:</span>
+                <button onclick="setCategoryFilter('ALL')" class="cat-btn active px-3 py-1 rounded-full text-xs font-medium transition-all bg-elecBlue-800 text-elecBlue-300 border border-elecBlue-400/30" data-cat="ALL">Tất cả</button>
+                <button onclick="setCategoryFilter('Tấn công')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Tấn công">Tấn công</button>
+                <button onclick="setCategoryFilter('Di chuyển')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Di chuyển">Di chuyển / Tốc độ</button>
+                <button onclick="setCategoryFilter('Điện từ')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Điện từ">Điện từ / Điều khiển</button>
+                <button onclick="setCategoryFilter('Phòng thủ')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Phòng thủ">Phòng thủ</button>
+                <button onclick="setCategoryFilter('Cảm nhận')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Cảm nhận">Cảm nhận / Trinh sát</button>
+                <button onclick="setCategoryFilter('Khống chế')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Khống chế">Khống chế</button>
+                <button onclick="setCategoryFilter('Biến thân')" class="cat-btn px-3 py-1 rounded-full text-xs font-medium text-slate-300 hover:text-white bg-elecBlue-900/40 border border-elecBlue-800" data-cat="Biến thân">Biến thân / Cường hóa</button>
+            </div>
+        </section>
+
+        <!-- SPELLS GRID CONTAINER -->
+        <main>
+            <div id="spells-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Spells will be dynamically rendered here via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="no-results" class="hidden text-center py-16 p-8 rounded-2xl glass-card">
+                <i class="fa-solid fa-shield-cat text-5xl text-elecBlue-400 mb-4 animate-bounce"></i>
+                <h3 class="text-xl font-orbitron font-bold text-white mb-2">Không tìm thấy chiêu thức phù hợp</h3>
+                <p class="text-sm text-slate-400 mb-4">Hãy thử thay đổi từ khóa tìm kiếm hoặc bỏ bộ lọc hiện tại.</p>
+                <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-elecBlue-700 hover:bg-elecBlue-600 text-white font-orbitron text-xs">
+                    Đặt Lại Bộ Lọc
+                </button>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="mt-20 pt-8 border-t border-elecBlue-800/60 text-center text-xs text-slate-500 font-orbitron space-y-2">
+            <p class="text-slate-400">⚡ LÔI ĐIỆN MA PHÁP — LIGHTNING MAGIC & ELECTROMAGNETIC ARTS</p>
+            <p>Hệ thống 19 Chiêu thức Phân cấp D-C-B-A-S · Quy tắc Ma Pháp Giả Tưởng Cân Bằng</p>
+        </footer>
+
+    </div>
+
+    <!-- SPELL DETAIL MODAL / INTERACTIVE TESTER -->
+    <div id="spell-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#081026] border border-elecBlue-400/40 shadow-2xl shadow-elecBlue-500/20 p-6 md:p-8">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-10 h-10 rounded-full bg-elecBlue-900/80 border border-elecBlue-700 flex items-center justify-center transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Modal Content Header -->
+            <div class="flex items-start gap-4 mb-6 pr-10">
+                <div id="modal-num-badge" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-elecBlue-500 to-elecBlue-800 text-white font-orbitron font-bold text-xl flex items-center justify-center shrink-0 border border-elecBlue-300 shadow-md">
+                    01
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="modal-rank-badge" class="px-2.5 py-0.5 rounded-md text-xs font-orbitron font-bold uppercase">CAP D</span>
+                        <span id="modal-category" class="text-xs font-orbitron text-elecBlue-300 bg-elecBlue-900/80 px-2.5 py-0.5 rounded-md border border-elecBlue-800">Tấn công</span>
+                    </div>
+                    <h2 id="modal-title-vi" class="text-2xl md:text-3xl font-bold font-orbitron text-white">LÔI ĐIỂM</h2>
+                    <p id="modal-title-en" class="text-sm font-orbitron text-elecYellow-400 tracking-wider">SPARK SHOT</p>
+                </div>
+            </div>
+
+            <!-- Cast Spell Interactive Canvas Demo Area -->
+            <div class="relative w-full h-48 rounded-2xl bg-[#030611] border border-elecBlue-500/30 mb-6 overflow-hidden flex flex-col items-center justify-center group">
+                <canvas id="modal-canvas" class="absolute inset-0 w-full h-full"></canvas>
+                <div class="relative z-10 text-center pointer-events-none">
+                    <i id="modal-cast-icon" class="fa-solid fa-bolt text-4xl text-elecYellow-400 mb-2 drop-shadow-[0_0_15px_#ffea00] animate-pulse"></i>
+                    <p class="text-xs font-orbitron text-slate-300 uppercase tracking-widest">Mô phỏng Xung Điện Ma Pháp</p>
+                </div>
+                <button id="modal-cast-btn" onclick="castSpellAnimation()" class="absolute bottom-3 right-3 z-20 px-4 py-2 rounded-xl bg-elecBlue-500 hover:bg-elecBlue-400 text-white font-orbitron text-xs font-bold shadow-lg transition-all active:scale-95 flex items-center gap-2">
+                    <i class="fa-solid fa-play text-elecYellow-400"></i>
+                    THI TRIỂN MA PHÁP
+                </button>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-4 text-sm text-slate-200 mb-6">
+                <div>
+                    <h4 class="text-xs font-orbitron uppercase text-slate-400 mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-align-left text-elecBlue-300"></i> Mô tả chiêu thức
+                    </h4>
+                    <p id="modal-desc" class="p-3.5 rounded-xl bg-elecBlue-900/30 border border-elecBlue-800/60 leading-relaxed text-slate-100">
+                        Bắn một tia điện nhỏ từ đầu ngón tay...
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="text-xs font-orbitron uppercase text-elecBlue-300 mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> Đặc điểm nổi bật
+                        </h4>
+                        <div id="modal-features" class="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-slate-200 leading-relaxed">
+                            Nhanh, dễ sử dụng, tiêu hao ma lực thấp.
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-orbitron uppercase text-elecYellow-400 mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-elecYellow-400"></i> Giới hạn & Điểm yếu
+                        </h4>
+                        <div id="modal-limits" class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-slate-200 leading-relaxed">
+                            Tầm bắn ngắn, sức công phá thấp.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transformation Special Box (If applicable) -->
+                <div id="modal-special-box" class="hidden p-4 rounded-2xl bg-gradient-to-r from-elecBlue-900 to-elecBlue-800 border border-elecYellow-400/60 text-xs leading-relaxed space-y-2 shadow-lg">
+                    <div class="font-bold text-elecYellow-400 font-orbitron text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-lg"></i> CHIÊU BIẾN THÂN DUY NHẤT TRONG BỘ 19 CHIÊU
+                    </div>
+                    <p class="text-slate-200">
+                        Lôi Giáp là cột mốc biến thân duy nhất, kết hợp hoàn hảo giữa giáp ma pháp vật lý và dòng điện sinh học tăng cường toàn bộ chỉ số phản xạ, cận chiến và phòng ngự.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Bars -->
+            <div class="border-t border-elecBlue-800/60 pt-4 space-y-3">
+                <h4 class="text-xs font-orbitron uppercase text-slate-400 mb-2">Chỉ số thuộc tính ma pháp</h4>
+                <div class="space-y-2">
+                    <div>
+                        <div class="flex justify-between text-xs font-orbitron mb-1">
+                            <span class="text-slate-300">Sức Công Phá / Sát Thương</span>
+                            <span id="modal-stat-power-val" class="text-elecYellow-400 font-bold">40%</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-elecBlue-950 overflow-hidden border border-elecBlue-800">
+                            <div id="modal-stat-power" class="h-full bg-gradient-to-r from-elecYellow-500 to-amber-400 transition-all duration-500" style="width: 40%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-orbitron mb-1">
+                            <span class="text-slate-300">Tốc Độ Thi Triển / Bộc Phát</span>
+                            <span id="modal-stat-speed-val" class="text-elecBlue-300 font-bold">90%</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-elecBlue-950 overflow-hidden border border-elecBlue-800">
+                            <div id="modal-stat-speed" class="h-full bg-gradient-to-r from-elecBlue-400 to-cyan-300 transition-all duration-500" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-orbitron mb-1">
+                            <span class="text-slate-300">Tiêu Hao Ma Lực (MP Cost)</span>
+                            <span id="modal-stat-mp-val" class="text-purple-400 font-bold">20%</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-elecBlue-950 overflow-hidden border border-elecBlue-800">
+                            <div id="modal-stat-mp" class="h-full bg-gradient-to-r from-purple-500 to-indigo-400 transition-all duration-500" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & SPELL DATA -->
+    <script>
+        // --- DATASET OF ALL 19 SPELLS ---
+        const spellsData = [
+            {
+                id: 1,
+                num: "01",
+                nameVi: "LÔI ĐIỂM",
+                nameEn: "SPARK SHOT",
+                rank: "D",
+                category: "Tấn công",
+                desc: "Bắn một tia điện nhỏ từ đầu ngón tay, gây tê và làm gián đoạn hành động của mục tiêu.",
+                features: ["Nhanh, dễ sử dụng", "Tiêu hao ma lực thấp", "Gây gián đoạn đòn đánh"],
+                limits: "Tầm bắn ngắn, sức công phá thấp, khó xuyên qua lớp phòng thủ mạnh.",
+                stats: { power: 25, speed: 90, mp: 15 }
+            },
+            {
+                id: 2,
+                num: "02",
+                nameVi: "ĐIỆN QUANG BỘ",
+                nameEn: "VOLT STEP",
+                rank: "D",
+                category: "Di chuyển",
+                desc: "Phóng điện quanh bàn chân để tăng tốc trong một quãng ngắn.",
+                features: ["Đổi hướng nhanh", "Né đòn và áp sát mục tiêu tốt", "Phản ứng tức thì"],
+                limits: "Không phải dịch chuyển tức thời; khó điều khiển khi đổi hướng liên tục.",
+                stats: { power: 10, speed: 85, mp: 20 }
+            },
+            {
+                id: 3,
+                num: "03",
+                nameVi: "LÔI NHẬN",
+                nameEn: "THUNDER EDGE",
+                rank: "D",
+                category: "Tấn công",
+                desc: "Bao phủ bàn tay hoặc vũ khí bằng một lớp điện mỏng, tăng khả năng gây tê khi đánh trúng.",
+                features: ["Thi triển nhanh", "Phù hợp kết hợp với kiếm thuật và võ thuật cận chiến"],
+                limits: "Tầm đánh ngắn; duy trì lâu sẽ tiêu hao ma lực liên tục.",
+                stats: { power: 35, speed: 80, mp: 25 }
+            },
+            {
+                id: 4,
+                num: "04",
+                nameVi: "TĨNH ĐIỆN CẢM ỨNG",
+                nameEn: "STATIC SENSE",
+                rank: "D",
+                category: "Cảm nhận",
+                desc: "Cảm nhận sự thay đổi điện tích và chuyển động gần đó thông qua dao động điện trường.",
+                features: ["Hữu ích trong bóng tối", "Hoạt động tốt khi tầm nhìn bị hạn chế"],
+                limits: "Không nhìn xuyên mọi vật; môi trường nhiễu điện có thể làm sai lệch cảm nhận.",
+                stats: { power: 5, speed: 70, mp: 15 }
+            },
+
+            // CẤP C
+            {
+                id: 5,
+                num: "05",
+                nameVi: "LÔI THƯƠNG",
+                nameEn: "LIGHTNING SPEAR",
+                rank: "C",
+                category: "Tấn công",
+                desc: "Nén điện năng thành một mũi thương phóng thẳng về phía trước.",
+                features: ["Tốc độ cao", "Đường bay tập trung xuyên phá", "Thích hợp phá lớp chắn yếu"],
+                limits: "Khó đổi hướng sau khi phóng; giảm hiệu quả trước phòng thủ chuyên chống điện.",
+                stats: { power: 60, speed: 85, mp: 35 }
+            },
+            {
+                id: 6,
+                num: "06",
+                nameVi: "ĐIỆN TỪ DẪN ĐẠO",
+                nameEn: "MAGNETIC GUIDANCE",
+                rank: "C",
+                category: "Điện từ",
+                desc: "Tạo từ trường để làm lệch hướng hoặc điều khiển các vật thể kim loại nhỏ ở gần.",
+                features: ["Hỗ trợ vũ khí kim loại", "Gây nhiễu quỹ đạo đạn/vật thể kim loại của địch"],
+                limits: "Hiệu quả phụ thuộc vật liệu, khối lượng và khoảng cách; không điều khiển được mọi kim loại dễ dàng.",
+                stats: { power: 30, speed: 75, mp: 40 }
+            },
+            {
+                id: 7,
+                num: "07",
+                nameVi: "LÔI LIÊN KÍCH",
+                nameEn: "CHAIN LIGHTNING",
+                rank: "C",
+                category: "Tấn công",
+                desc: "Phóng tia điện lần lượt nối giữa những mục tiêu nằm gần nhau.",
+                features: ["Phù hợp đối phó nhóm đối thủ", "Gây gián đoạn nhiều mục tiêu cùng lúc"],
+                limits: "Điện năng suy giảm sau mỗi lần truyền; các mục tiêu ở quá xa nhau sẽ không bị liên kết.",
+                stats: { power: 55, speed: 80, mp: 45 }
+            },
+            {
+                id: 8,
+                num: "08",
+                nameVi: "ĐIỆN MẠC",
+                nameEn: "VOLT BARRIER",
+                rank: "C",
+                category: "Phòng thủ",
+                desc: "Dựng một màn điện trước cơ thể để làm chệch hướng vật thể nhẹ và cản đối thủ tiếp cận.",
+                features: ["Triển khai nhanh", "Có thể duy trì phòng thủ chủ động trong thời gian ngắn"],
+                limits: "Không phải lá chắn tuyệt đối; tiêu hao ma lực liên tục và yếu trước đòn đánh áp đảo.",
+                stats: { power: 40, speed: 75, mp: 40 }
+            },
+
+            // CẤP B
+            {
+                id: 9,
+                num: "09",
+                nameVi: "LÔI ẢNH",
+                nameEn: "THUNDER AFTERIMAGE",
+                rank: "B",
+                category: "Di chuyển",
+                desc: "Bùng nổ điện năng để tăng tốc đột ngột, để lại tàn ảnh trong mắt đối thủ.",
+                features: ["Hỗ trợ né tránh cực tốt", "Áp sát và thay đổi vị trí chiến thuật nhanh"],
+                limits: "Tàn ảnh không phải bản sao thật; khó duy trì tốc độ cao trong thời gian dài.",
+                stats: { power: 20, speed: 95, mp: 50 }
+            },
+            {
+                id: 10,
+                num: "10",
+                nameVi: "ĐIỆN TỪ TRÓI BUỘC",
+                nameEn: "MAGNETIC BIND",
+                rank: "B",
+                category: "Khống chế",
+                desc: "Tạo các vòng điện từ bao quanh mục tiêu, làm hạn chế chuyển động trong thời gian ngắn.",
+                features: ["Hiệu quả cao với mục tiêu mang giáp hoặc vật liệu chịu ảnh hưởng từ tính"],
+                limits: "Mục tiêu có sức mạnh vật lý vượt trội có thể phá vỡ; phạm vi khống chế có giới hạn.",
+                stats: { power: 45, speed: 70, mp: 55 }
+            },
+            {
+                id: 11,
+                num: "11",
+                nameVi: "LÔI TRỤ",
+                nameEn: "THUNDER PILLAR",
+                rank: "B",
+                category: "Tấn công",
+                desc: "Gọi một cột điện năng từ trên cao đánh xuống khu vực được chỉ định.",
+                features: ["Sát thương tập trung mạnh", "Có thể đánh tan vỡ đội hình đối phương"],
+                limits: "Cần thời gian ngắn để định vị; tiêu hao ma lực cao hơn chiêu cấp thấp.",
+                stats: { power: 75, speed: 65, mp: 60 }
+            },
+            {
+                id: 12,
+                num: "12",
+                nameVi: "ĐIỆN TRƯỜNG CẢM TRI",
+                nameEn: "ELECTRIC FIELD SENSE",
+                rank: "B",
+                category: "Cảm nhận",
+                desc: "Mở rộng vùng cảm nhận điện trường quanh bản thân để phát hiện chuyển động và sự xáo trộn trong khu vực.",
+                features: ["Theo dõi nhiều hướng 360 độ mà không cần nhìn trực tiếp"],
+                limits: "Không xác định chính xác mọi chi tiết; môi trường nhiều nguồn điện khiến tín hiệu chồng lấn.",
+                stats: { power: 10, speed: 85, mp: 45 }
+            },
+            {
+                id: 13,
+                num: "13",
+                nameVi: "LÔI GIÁP",
+                nameEn: "THUNDER ARMOR",
+                rank: "B",
+                category: "Biến thân",
+                isTransformation: true,
+                desc: "Bao phủ toàn thân bằng lớp giáp điện màu xanh lam và vàng bạc. Các đường điện chạy dọc tay, chân, ngực và vai như một bộ giáp ma pháp.",
+                features: [
+                    "Tăng mạnh tốc độ phản xạ và di chuyển",
+                    "Tăng lực đấm & đòn đánh cận chiến",
+                    "Tạo lớp điện bảo vệ, gây tê nhẹ đối thủ chạm vào",
+                    "Ngoại hình: Giáp điện ôm sát, tia điện bùng nổ ở vai & cánh tay"
+                ],
+                limits: "Tiêu hao ma lực liên tục; không miễn nhiễm hoàn toàn với điện/vật lý; giảm tốc khi mất tập trung.",
+                stats: { power: 80, speed: 90, mp: 70 }
+            },
+
+            // CẤP A
+            {
+                id: 14,
+                num: "14",
+                nameVi: "ĐIỆN TRƯỜNG ÁP CHẾ",
+                nameEn: "DOMINION FIELD",
+                rank: "A",
+                category: "Khống chế",
+                desc: "Mở rộng một vùng điện trường quanh người thi triển, làm nhiễu cảm nhận và hạn chế khả năng điều khiển ma pháp của đối thủ.",
+                features: ["Kiểm soát toàn bộ diện rộng chiến trường", "Hỗ trợ đồng đội áp sát an toàn"],
+                limits: "Không vô hiệu hóa mọi loại ma pháp; phạm vi càng rộng thì hiệu quả càng suy giảm.",
+                stats: { power: 50, speed: 75, mp: 75 }
+            },
+            {
+                id: 15,
+                num: "15",
+                nameVi: "TỪ CỰC PHÂN ĐỊNH",
+                nameEn: "POLARITY SHIFT",
+                rank: "A",
+                category: "Điện từ",
+                desc: "Thay đổi cực tính của trường điện từ do người thi triển tạo ra, đẩy hoặc hút vật thể phù hợp.",
+                features: ["Đẩy lùi hoặc hút làm lệch vũ khí kim loại", "Thay đổi quỹ đạo đòn đánh vật lý"],
+                limits: "Không tác động mạnh lên mọi vật; vật quá nặng hoặc nằm ngoài phạm vi sẽ khó bị ảnh hưởng.",
+                stats: { power: 65, speed: 80, mp: 70 }
+            },
+            {
+                id: 16,
+                num: "16",
+                nameVi: "THIÊN LÔI PHÁO",
+                nameEn: "CELESTIAL VOLT CANNON",
+                rank: "A",
+                category: "Tấn công",
+                desc: "Tích tụ lượng lớn điện năng rồi phóng thành luồng sét cực mạnh theo một hướng chỉ định.",
+                features: ["Sức công phá bộc phá cực cao", "Thích hợp phá kết giới hoặc giáp ma pháp kiên cố"],
+                limits: "Cần thời gian tích tụ; khó cơ động khi đang tích năng lượng và tốn rất nhiều ma lực.",
+                stats: { power: 90, speed: 60, mp: 85 }
+            },
+            {
+                id: 17,
+                num: "17",
+                nameVi: "LÔI VỰC",
+                nameEn: "STORM DOMAIN",
+                rank: "A",
+                category: "Khống chế",
+                desc: "Bao phủ một khu vực bằng những luồng điện chạy trên không trung và mặt đất theo quy tắc ma pháp.",
+                features: ["Tạo lãnh địa độc tôn", "Cản trở cực mạnh khả năng di chuyển của toàn bộ kẻ địch"],
+                limits: "Đồng minh trong vùng có thể bị ảnh hưởng nếu không bảo vệ; duy trì lâu khiến cạn kiệt ma lực.",
+                stats: { power: 85, speed: 70, mp: 85 }
+            },
+
+            // CẤP S
+            {
+                id: 18,
+                num: "18",
+                nameVi: "LÔI TỐC CỰC HẠN",
+                nameEn: "ABSOLUTE THUNDER",
+                rank: "S",
+                category: "Di chuyển",
+                isUltimate: true,
+                desc: "Dồn ma lực vào hệ thống điện ma pháp quanh cơ thể, tạo ra một pha bộc phát tốc độ cực cao để tiếp cận và tung đòn quyết định.",
+                features: ["Tốc độ tiếp cận đỉnh cao thế giới ma pháp", "Kết hợp nhuần nhuyễn với Lôi Giáp & Lôi Nhận"],
+                limits: "Không phải dịch chuyển tức thời; cần định hướng chính xác, tiêu hao ma lực khổng lồ.",
+                stats: { power: 85, speed: 100, mp: 90 }
+            },
+            {
+                id: 19,
+                num: "19",
+                nameVi: "THẦN LÔI PHÁN QUYẾT",
+                nameEn: "THUNDER GOD'S JUDGMENT",
+                rank: "S",
+                category: "Tấn công",
+                isUltimate: true,
+                desc: "Tập trung điện năng, điện trường và điện từ thành trận pháp lôi điện khổng lồ. Một luồng thần lôi giáng xuống điểm trung tâm, giải phóng xung điện ma pháp toàn khu vực.",
+                features: [
+                    "Sức công phá hủy diệt tối thượng",
+                    "Đánh tan các kết giới cấp cao nhất",
+                    "Hiệu ứng sấm trắng, tia điện xanh thiên hà & vòng trận bạc"
+                ],
+                limits: "Tiêu hao gần như toàn bộ ma lực dự trữ; suy yếu nghiêm trọng sau khi sử dụng; cần chuẩn bị trận pháp.",
+                stats: { power: 100, speed: 75, mp: 100 }
+            }
+        ];
+
+        // --- FILTER STATE ---
+        let currentRank = 'ALL';
+        let currentCategory = 'ALL';
+        let searchQuery = '';
+        let isAudioMuted = true;
+        let audioCtx = null;
+
+        // Render Spells Grid
+        function renderSpells() {
+            const grid = document.getElementById('spells-grid');
+            const noRes = document.getElementById('no-results');
+            grid.innerHTML = '';
+
+            const filtered = spellsData.filter(spell => {
+                const matchRank = (currentRank === 'ALL') || (spell.rank === currentRank);
+                const matchCat = (currentCategory === 'ALL') || (spell.category.includes(currentCategory));
+                const matchSearch = spell.nameVi.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    spell.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    spell.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchRank && matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                noRes.classList.remove('hidden');
+                return;
+            } else {
+                noRes.classList.add('hidden');
+            }
+
+            filtered.forEach(spell => {
+                const card = document.createElement('div');
+                
+                // Determine card background style
+                let specialBorder = '';
+                if (spell.isTransformation) {
+                    card.className = 'glass-card glass-card-special rounded-2xl p-5 relative cursor-pointer group flex flex-col justify-between';
+                } else if (spell.isUltimate) {
+                    card.className = 'glass-card rounded-2xl p-5 relative cursor-pointer group flex flex-col justify-between border-elecYellow-400/50 shadow-[0_0_15px_rgba(255,234,0,0.15)]';
+                } else {
+                    card.className = 'glass-card rounded-2xl p-5 relative cursor-pointer group flex flex-col justify-between';
+                }
+
+                card.onclick = () => openModal(spell.id);
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Top Header info -->
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-orbitron text-slate-400 font-bold tracking-wider">NO.${spell.num}</span>
+                            <div class="flex items-center gap-2">
+                                ${spell.isTransformation ? '<span class="px-2 py-0.5 rounded text-[10px] font-orbitron font-bold bg-elecYellow-400 text-black shadow-[0_0_8px_#ffea00] animate-pulse">BIẾN THÂN</span>' : ''}
+                                ${spell.isUltimate ? '<span class="px-2 py-0.5 rounded text-[10px] font-orbitron font-bold bg-purple-500 text-white shadow-[0_0_8px_#a855f7]">TUYỆT KỸ</span>' : ''}
+                                <span class="rank-${spell.rank} px-2.5 py-0.5 rounded-md text-xs font-orbitron font-bold uppercase">CẤP ${spell.rank}</span>
+                            </div>
+                        </div>
+
+                        <!-- Spell Title -->
+                        <div class="mb-3">
+                            <h3 class="text-xl font-bold font-orbitron text-white group-hover:text-elecBlue-300 transition-colors flex items-center gap-2">
+                                ${spell.nameVi}
+                                <i class="fa-solid fa-bolt text-elecYellow-400 opacity-0 group-hover:opacity-100 transition-opacity text-sm"></i>
+                            </h3>
+                            <div class="text-xs font-orbitron text-elecYellow-400/90 font-medium tracking-wide">${spell.nameEn}</div>
+                        </div>
+
+                        <!-- Category Tag -->
+                        <div class="inline-block px-2.5 py-1 rounded-md bg-elecBlue-900/80 border border-elecBlue-800 text-[11px] font-orbitron text-elecBlue-300 mb-3">
+                            ${spell.category}
+                        </div>
+
+                        <!-- Short Description -->
+                        <p class="text-xs text-slate-300 leading-relaxed line-clamp-3 mb-4">
+                            ${spell.desc}
+                        </p>
+                    </div>
+
+                    <!-- Bottom Stats preview -->
+                    <div class="pt-3 border-t border-elecBlue-800/50 flex items-center justify-between text-[11px] font-orbitron text-slate-400">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-gauge-high text-elecBlue-400"></i> Pwr: ${spell.stats.power}%</span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-wind text-cyan-400"></i> Spd: ${spell.stats.speed}%</span>
+                        <span class="text-elecBlue-300 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-semibold">Chi tiết <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // --- FILTER ACTIONS ---
+        function setRankFilter(rank) {
+            currentRank = rank;
+            document.querySelectorAll('.rank-btn').forEach(btn => {
+                if (btn.dataset.rank === rank) {
+                    btn.classList.add('bg-elecBlue-500', 'text-white', 'border-elecBlue-300');
+                    btn.classList.remove('opacity-70');
+                } else {
+                    btn.classList.remove('bg-elecBlue-500', 'text-white', 'border-elecBlue-300');
+                    btn.classList.add('opacity-70');
+                }
+            });
+            renderSpells();
+            playElectricZapSound(300, 0.05);
+        }
+
+        function setCategoryFilter(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.classList.add('bg-elecBlue-800', 'text-elecBlue-300', 'border-elecBlue-400/30');
+                    btn.classList.remove('text-slate-300', 'bg-elecBlue-900/40');
+                } else {
+                    btn.classList.remove('bg-elecBlue-800', 'text-elecBlue-300', 'border-elecBlue-400/30');
+                    btn.classList.add('text-slate-300', 'bg-elecBlue-900/40');
+                }
+            });
+            renderSpells();
+            playElectricZapSound(400, 0.05);
+        }
+
+        function filterSpells() {
+            searchQuery = document.getElementById('search-input').value;
+            renderSpells();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            searchQuery = '';
+            setRankFilter('ALL');
+            setCategoryFilter('ALL');
+        }
+
+        // --- MODAL & SPELL TESTER LOGIC ---
+        let currentModalSpell = null;
+
+        function openModal(id) {
+            const spell = spellsData.find(s => s.id === id);
+            if (!spell) return;
+            currentModalSpell = spell;
+
+            document.getElementById('modal-num-badge').innerText = spell.num;
+            document.getElementById('modal-title-vi').innerText = spell.nameVi;
+            document.getElementById('modal-title-en').innerText = spell.nameEn;
+            document.getElementById('modal-category').innerText = spell.category;
+            
+            const rankBadge = document.getElementById('modal-rank-badge');
+            rankBadge.className = `rank-${spell.rank} px-2.5 py-0.5 rounded-md text-xs font-orbitron font-bold uppercase`;
+            rankBadge.innerText = `CẤP ${spell.rank}`;
+
+            document.getElementById('modal-desc').innerText = spell.desc;
+
+            // Features list
+            const featBox = document.getElementById('modal-features');
+            featBox.innerHTML = spell.features.map(f => `<div class="flex items-start gap-1.5 mb-1"><i class="fa-solid fa-bolt text-xs text-emerald-400 mt-1"></i> <span>${f}</span></div>`).join('');
+
+            // Limits
+            document.getElementById('modal-limits').innerText = spell.limits;
+
+            // Special transformation box
+            const specialBox = document.getElementById('modal-special-box');
+            if (spell.isTransformation) {
+                specialBox.classList.remove('hidden');
+            } else {
+                specialBox.classList.add('hidden');
+            }
+
+            // Stats
+            document.getElementById('modal-stat-power').style.width = spell.stats.power + '%';
+            document.getElementById('modal-stat-power-val').innerText = spell.stats.power + '%';
+
+            document.getElementById('modal-stat-speed').style.width = spell.stats.speed + '%';
+            document.getElementById('modal-stat-speed-val').innerText = spell.stats.speed + '%';
+
+            document.getElementById('modal-stat-mp').style.width = spell.stats.mp + '%';
+            document.getElementById('modal-stat-mp-val').innerText = spell.stats.mp + '%';
+
+            const modal = document.getElementById('spell-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+
+            initModalCanvas();
+            playElectricZapSound(600, 0.1);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('spell-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // --- SOUND EFFECTS (WEB AUDIO API) ---
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function toggleAudio() {
+            initAudio();
+            isAudioMuted = !isAudioMuted;
+            const icon = document.getElementById('sound-icon');
+            const text = document.getElementById('sound-text');
+            if (isAudioMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-lg';
+                text.innerText = 'Âm Thanh: TẮT';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-lg text-elecYellow-400 animate-pulse';
+                text.innerText = 'Âm Thanh: BẬT';
+                playElectricZapSound(800, 0.1);
+            }
+        }
+
+        function playElectricZapSound(freq = 400, duration = 0.15) {
+            if (isAudioMuted || !audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + duration);
+
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // --- BACKGROUND LIGHTNING CANVAS ANIMATION ---
+        const bgCanvas = document.getElementById('lightning-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let width, height;
+        let lightningBolts = [];
+
+        function resizeBgCanvas() {
+            width = bgCanvas.width = window.innerWidth;
+            height = bgCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+
+        class LightningBolt {
+            constructor(x1, y1, x2, y2, color = '#00d2ff', branches = 2) {
+                this.x1 = x1;
+                this.y1 = y1;
+                this.x2 = x2;
+                this.y2 = y2;
+                this.color = color;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.05 + 0.03;
+                this.path = this.generatePath(x1, y1, x2, y2);
+            }
+
+            generatePath(x1, y1, x2, y2) {
+                let path = [{x: x1, y: y1}];
+                let dx = x2 - x1;
+                let dy = y2 - y1;
+                let distance = Math.hypot(dx, dy);
+                let steps = Math.max(5, Math.floor(distance / 25));
+
+                for (let i = 1; i < steps; i++) {
+                    let progress = i / steps;
+                    let curX = x1 + dx * progress + (Math.random() - 0.5) * 35;
+                    let curY = y1 + dy * progress + (Math.random() - 0.5) * 35;
+                    path.push({x: curX, y: curY});
+                }
+                path.push({x: x2, y: y2});
+                return path;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(this.path[0].x, this.path[0].y);
+                for (let i = 1; i < this.path.length; i++) {
+                    ctx.lineTo(this.path[i].x, this.path[i].y);
+                }
+                ctx.strokeStyle = this.color;
+                ctx.globalAlpha = this.life;
+                ctx.lineWidth = Math.random() * 2 + 1;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 12;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            update() {
+                this.life -= this.decay;
+            }
+        }
+
+        function triggerInteractiveZap(x, y) {
+            initAudio();
+            const startX = x || Math.random() * width;
+            const startY = y || Math.random() * (height / 2);
+            const endX = startX + (Math.random() - 0.5) * 300;
+            const endY = startY + 200 + Math.random() * 200;
+
+            const colors = ['#00d2ff', '#ffea00', '#ffffff', '#00a3ff'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            lightningBolts.push(new LightningBolt(startX, startY, endX, endY, color));
+            playElectricZapSound(Math.random() * 500 + 300, 0.12);
+        }
+
+        // Global click listener to spawn lightning
+        window.addEventListener('click', (e) => {
+            // Don't trigger if clicking modal controls
+            if (e.target.closest('#spell-modal') || e.target.closest('button') || e.target.closest('input')) return;
+            triggerInteractiveZap(e.clientX, e.clientY);
+        });
+
+        function animateBgCanvas() {
+            bgCtx.clearRect(0, 0, width, height);
+
+            // Ambient random lightning generator
+            if (Math.random() < 0.03) {
+                const rx = Math.random() * width;
+                lightningBolts.push(new LightningBolt(rx, 0, rx + (Math.random() - 0.5) * 200, height * 0.7, '#00d2ff'));
+            }
+
+            for (let i = lightningBolts.length - 1; i >= 0; i--) {
+                const bolt = lightningBolts[i];
+                bolt.draw(bgCtx);
+                bolt.update();
+                if (bolt.life <= 0) {
+                    lightningBolts.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateBgCanvas);
+        }
+
+        // --- MODAL DEMO CANVAS ANIMATION ---
+        let modalCanvas, modalCtx;
+        let modalAnimId = null;
+        let modalParticles = [];
+
+        function initModalCanvas() {
+            modalCanvas = document.getElementById('modal-canvas');
+            if (!modalCanvas) return;
+            modalCanvas.width = modalCanvas.offsetWidth;
+            modalCanvas.height = modalCanvas.offsetHeight;
+            modalCtx = modalCanvas.getContext('2d');
+            startModalAnim();
+        }
+
+        function castSpellAnimation() {
+            if (!modalCanvas) return;
+            const w = modalCanvas.width;
+            const h = modalCanvas.height;
+
+            // Spawn explosion particles
+            const color = currentModalSpell && currentModalSpell.rank === 'S' ? '#ffea00' : '#00d2ff';
+            for (let i = 0; i < 40; i++) {
+                modalParticles.push({
+                    x: w / 2,
+                    y: h / 2,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12,
+                    radius: Math.random() * 3 + 1,
+                    color: Math.random() > 0.5 ? color : '#ffffff',
+                    life: 1.0,
+                    decay: Math.random() * 0.04 + 0.02
+                });
+            }
+
+            // Spawn lightning bolts across modal canvas
+            for (let i = 0; i < 5; i++) {
+                lightningBolts.push(new LightningBolt(
+                    Math.random() * width,
+                    0,
+                    Math.random() * width,
+                    height,
+                    color
+                ));
+            }
+
+            playElectricZapSound(800, 0.25);
+        }
+
+        function startModalAnim() {
+            if (modalAnimId) cancelAnimationFrame(modalAnimId);
+
+            function loop() {
+                if (!modalCtx || !modalCanvas) return;
+                const w = modalCanvas.width;
+                const h = modalCanvas.height;
+
+                modalCtx.clearRect(0, 0, w, h);
+
+                // Draw central spell aura circle
+                const time = Date.now() * 0.003;
+                const radius = 25 + Math.sin(time) * 5;
+                modalCtx.save();
+                modalCtx.beginPath();
+                modalCtx.arc(w / 2, h / 2, radius, 0, Math.PI * 2);
+                modalCtx.strokeStyle = currentModalSpell && currentModalSpell.rank === 'S' ? '#ffea00' : '#00d2ff';
+                modalCtx.lineWidth = 2;
+                modalCtx.shadowColor = modalCtx.strokeStyle;
+                modalCtx.shadowBlur = 15;
+                modalCtx.stroke();
+                modalCtx.restore();
+
+                // Draw & update particles
+                for (let i = modalParticles.length - 1; i >= 0; i--) {
+                    const p = modalParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= p.decay;
+
+                    modalCtx.save();
+                    modalCtx.beginPath();
+                    modalCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    modalCtx.fillStyle = p.color;
+                    modalCtx.globalAlpha = Math.max(0, p.life);
+                    modalCtx.shadowColor = p.color;
+                    modalCtx.shadowBlur = 8;
+                    modalCtx.fill();
+                    modalCtx.restore();
+
+                    if (p.life <= 0) modalParticles.splice(i, 1);
+                }
+
+                modalAnimId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            renderSpells();
+            animateBgCanvas();
+        }
+    </script>
+</body>
+</html>
